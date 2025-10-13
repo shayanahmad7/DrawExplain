@@ -10,7 +10,7 @@ const useGoogleOAuth = () => {
       if (typeof window !== "undefined") {
         // Initiate the Google OAuth flow
         window.location.href =
-          `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ai-grader-deployed-backend-155657669630.europe-west1.run.app'}/api/v1/auth/google`;
+          `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplainbackend-74788697407.europe-west1.run.app'}/api/v1/auth/google`;
       }
     } catch (error) {
       console.error("Error during Google login:", error);

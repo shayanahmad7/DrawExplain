@@ -25,7 +25,7 @@ app.use(helmet());
 app.use(cors({
   origin: [
     'http://localhost:3001',
-    'https://ai-grader-deployed-frontend-155657669630.europe-west1.run.app',
+    'https://drawexplain-74788697407.europe-west1.run.app',
     'https://drawexplain.com',
     'https://www.drawexplain.com'
   ],
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV !== "deployment") {
   // More explicit CORS configuration for production
   app.use(cors({ 
     origin: [
-      'https://ai-grader-deployed-frontend-155657669630.europe-west1.run.app',
+      'https://drawexplain-74788697407.europe-west1.run.app',
       'https://drawexplain.com',
       'https://www.drawexplain.com'
     ], 

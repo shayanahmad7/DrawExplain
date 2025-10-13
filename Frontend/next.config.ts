@@ -35,7 +35,7 @@ const nextConfig: NextConfig = {
             key: "Access-Control-Allow-Origin",
             value:
               process.env.NODE_ENV === "production"
-                ? process.env.FRONTEND_URL || "https://ai-grader-deployed-frontend-155657669630.europe-west1.run.app"
+                ? process.env.FRONTEND_URL || "https://drawexplain-74788697407.europe-west1.run.app"
                 : "http://localhost:3001",
           },
           {

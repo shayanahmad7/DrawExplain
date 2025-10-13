@@ -39,7 +39,7 @@ export default function PracticePage() {
       try {
         setIsLoading(true);
         const response = await authenticatedFetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ai-grader-deployed-backend-155657669630.europe-west1.run.app'}/api/v1/questions`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplainbackend-74788697407.europe-west1.run.app'}/api/v1/questions`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

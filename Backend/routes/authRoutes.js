@@ -14,7 +14,7 @@ authRouter.get(
   passport.authenticate("google", { session: false }),
   function (req, res) {
     const token = jwt.sign({ user: { id: req.user.id } }, JWT_SECRET, { expiresIn: "1d" });
-    res.redirect(`${process.env.FRONTEND_URL || 'https://ai-grader-deployed-frontend-155657669630.europe-west1.run.app'}/auth-callback?token=${token}`);
+    res.redirect(`${process.env.FRONTEND_URL || 'https://drawexplain-74788697407.europe-west1.run.app'}/auth-callback?token=${token}`);
   }
 );
 

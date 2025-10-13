@@ -26,7 +26,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ai-grader-deployed-backend-155657669630.europe-west1.run.app'}/api/v1/auth/register`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplainbackend-74788697407.europe-west1.run.app'}/api/v1/auth/register`,
         {
           method: "POST",
           headers: {

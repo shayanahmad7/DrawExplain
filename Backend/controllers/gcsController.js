@@ -52,16 +52,21 @@ let storage;
 let bucket;
 
 try {
+  console.log("Initializing Google Cloud Storage...");
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
     throw new Error("GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable is not set");
   }
   
+  console.log("GOOGLE_APPLICATION_CREDENTIALS_JSON found, parsing...");
   const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+  console.log("Credentials parsed, creating Storage client...");
   storage = new Storage({ credentials });
+  console.log("Storage client created, getting bucket...");
   bucket = storage.bucket("draw-explain-storage");
-  console.log("Google Cloud Storage initialized successfully");
+  console.log("Google Cloud Storage initialized successfully with bucket: draw-explain-storage");
 } catch (error) {
   console.error("Failed to initialize Google Cloud Storage:", error.message);
+  console.error("Error stack:", error.stack);
   // Create a mock storage for development/testing
   storage = null;
   bucket = null;

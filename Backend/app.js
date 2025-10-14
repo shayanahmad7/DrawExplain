@@ -65,6 +65,15 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(passport.initialize());
 require("./controllers/authController")(passport);
 
+// Health check route
+app.get("/health", (req, res) => {
+  res.json({ 
+    status: "ok", 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development"
+  });
+});
+
 // Routes
 app.use("/api/v1/exams", examRouter);
 app.use("/api/v1/questions", questionRouter);

@@ -3,6 +3,35 @@ const gcsController = require("../controllers/gcsController");
 const authMiddleware = require("../middleware/auth");
 const gcsRouter = express.Router();
 
+// Test route without authentication
+gcsRouter.post("/test", (req, res) => {
+  console.log("Test route hit");
+  res.json({ message: "Test route working" });
+});
+
+// Test audio upload without authentication
+gcsRouter.post("/test-audio", (req, res, next) => {
+  console.log("Test audio upload route hit");
+  gcsController.upload.single("file")(req, res, (err) => {
+    if (err) {
+      console.error("Multer error (test):", err);
+      return res.status(400).json({ message: "File upload error", error: err.message });
+    }
+    console.log("Test audio upload - File:", req.file ? "Present" : "Missing");
+    if (req.file) {
+      console.log("File details:", {
+        originalname: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size
+      });
+    }
+    res.json({ 
+      message: "Test audio upload successful", 
+      file: req.file ? req.file.originalname : "No file" 
+    });
+  });
+});
+
 // Route for image uploads
 gcsRouter.post("/image", authMiddleware, gcsController.upload.single("file"), (req, res) => {
   //   uploadToGCS(req.file, res);

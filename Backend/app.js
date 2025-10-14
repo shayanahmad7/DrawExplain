@@ -21,8 +21,8 @@ app.set("trust proxy", true);
 // Middlewares
 app.use(helmet());
 
-// Fallback CORS configuration (always applied)
-app.use(cors({
+// CORS configuration
+const corsOptions = {
   origin: [
     'http://localhost:3001',
     'https://drawexplain-74788697407.europe-west1.run.app',
@@ -31,24 +31,24 @@ app.use(cors({
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
-}));
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With', 
+    'Accept', 
+    'Origin',
+    'Access-Control-Allow-Origin',
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Methods'
+  ],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 if (process.env.NODE_ENV !== "deployment") {
   app.use(morgan("dev"));
-  app.use(cors({ origin: `http://localhost:3001`, credentials: true }));
 } else {
-  // More explicit CORS configuration for production
-  app.use(cors({ 
-    origin: [
-      'https://drawexplain-74788697407.europe-west1.run.app',
-      'https://drawexplain.com',
-      'https://www.drawexplain.com'
-    ], 
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
-  }));
   const limiter = rateLimit({
     max: 200,
     windowMs: 3 * 60 * 1000,
@@ -58,7 +58,8 @@ if (process.env.NODE_ENV !== "deployment") {
 }
 
 app.use(compression());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Passport middleware
 app.use(passport.initialize());
@@ -72,5 +73,14 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/upload", gcsRouter);
 app.use("/api/v1/submit", submitRouter);
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Global error handler:', err);
+  res.status(500).json({
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+  });
+});
 
 module.exports = app;

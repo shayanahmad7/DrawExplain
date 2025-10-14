@@ -70,13 +70,23 @@ try {
 // Multer configuration for memory storage
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // Increased file size limit for audio files (10MB)
+  limits: { 
+    fileSize: 10 * 1024 * 1024, // Increased file size limit for audio files (10MB)
+    fieldSize: 10 * 1024 * 1024
+  },
+  fileFilter: (req, file, cb) => {
+    console.log('Multer file filter - file:', file.originalname, 'mimetype:', file.mimetype);
+    cb(null, true);
+  }
 });
 
 // Generic upload handler
 async function uploadToGCS(file, res) {
   try {
+    console.log("uploadToGCS called with file:", file ? file.originalname : "null");
+    
     if (!file) {
+      console.error("No file uploaded");
       return res.status(400).send("No file uploaded.");
     }
 

@@ -10,9 +10,18 @@ gcsRouter.post("/image", authMiddleware, gcsController.upload.single("file"), (r
 });
 
 // Route for audio uploads
-gcsRouter.post("/audio", authMiddleware, gcsController.upload.single("file"), (req, res) => {
-  //   uploadToGCS(req.file, res);
-  gcsController.uploadToGCS(req.file, res);
+gcsRouter.post("/audio", authMiddleware, (req, res, next) => {
+  console.log("Audio upload route hit");
+  gcsController.upload.single("file")(req, res, (err) => {
+    if (err) {
+      console.error("Multer error:", err);
+      return res.status(400).json({ message: "File upload error", error: err.message });
+    }
+    console.log("Audio upload request received");
+    console.log("File:", req.file ? "Present" : "Missing");
+    console.log("User:", req.user);
+    gcsController.uploadToGCS(req.file, res);
+  });
 });
 
 // Research storage routes
@@ -28,9 +37,16 @@ gcsRouter.post(
 gcsRouter.post(
   "/research/audio",
   authMiddleware,
-  gcsController.upload.single("file"),
-  (req, res) => {
-    gcsController.uploadToResearchStorage(req.file, res);
+  (req, res, next) => {
+    console.log("Research audio upload route hit");
+    gcsController.upload.single("file")(req, res, (err) => {
+      if (err) {
+        console.error("Multer error (research audio):", err);
+        return res.status(400).json({ message: "File upload error", error: err.message });
+      }
+      console.log("Research audio upload request received");
+      gcsController.uploadToResearchStorage(req.file, res);
+    });
   }
 );
 

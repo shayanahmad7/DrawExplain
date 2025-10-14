@@ -92,13 +92,23 @@ async function uploadToGCS(file, res) {
     
     if (!file) {
       console.error("No file uploaded");
-      return res.status(400).send("No file uploaded.");
+      return res.status(400).json({ 
+        error: "No file uploaded",
+        message: "No file was provided in the request"
+      });
     }
 
     if (!storage || !bucket) {
       console.error("Google Cloud Storage not initialized");
-      return res.status(500).send({ 
-        message: "Google Cloud Storage not configured. Please check GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable." 
+      console.error("Storage:", storage ? "Initialized" : "NULL");
+      console.error("Bucket:", bucket ? "Initialized" : "NULL");
+      return res.status(500).json({ 
+        error: "Storage not configured",
+        message: "Google Cloud Storage is not properly configured. Please check GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable.",
+        details: {
+          storage: storage ? "OK" : "NULL",
+          bucket: bucket ? "OK" : "NULL"
+        }
       });
     }
 
@@ -110,19 +120,38 @@ async function uploadToGCS(file, res) {
 
     blobStream.on("error", (err) => {
       console.error("GCS upload error:", err);
-      res.status(500).send({ message: err.message });
+      console.error("Error details:", {
+        code: err.code,
+        message: err.message,
+        stack: err.stack
+      });
+      res.status(500).json({ 
+        error: "Upload failed",
+        message: err.message,
+        code: err.code,
+        details: "Failed to upload file to Google Cloud Storage"
+      });
     });
 
     blobStream.on("finish", () => {
       const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
       console.log("File uploaded successfully:", publicUrl);
-      res.status(200).send({ publicUrl });
+      res.status(200).json({ 
+        success: true,
+        publicUrl,
+        fileName: blob.name
+      });
     });
 
     blobStream.end(file.buffer);
   } catch (error) {
     console.error("Upload error:", error);
-    res.status(500).send({ message: error.message });
+    console.error("Error stack:", error.stack);
+    res.status(500).json({ 
+      error: "Upload failed",
+      message: error.message,
+      details: "An unexpected error occurred during file upload"
+    });
   }
 }
 

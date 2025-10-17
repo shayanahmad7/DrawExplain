@@ -33,7 +33,7 @@ async function downloadFileFromGCS(bucketName, srcFilename) {
 
 // Delete all files except from protected directory
 async function deleteAllFilesfromRoot() {
-  const bucketName = "draw-explain-storage";
+  const bucketName = "drawexplain-storage";
   const bucket = storage.bucket(bucketName);
   const directoryToSkip = "future_research_storage/";
 

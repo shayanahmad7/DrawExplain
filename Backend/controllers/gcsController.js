@@ -52,18 +52,14 @@ let storage;
 let bucket;
 
 try {
-  console.log("Initializing Google Cloud Storage...");
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
     throw new Error("GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable is not set");
   }
   
-  console.log("GOOGLE_APPLICATION_CREDENTIALS_JSON found, parsing...");
   const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
-  console.log("Credentials parsed, creating Storage client...");
   storage = new Storage({ credentials });
-  console.log("Storage client created, getting bucket...");
-  bucket = storage.bucket("draw-explain-storage");
-  console.log("Google Cloud Storage initialized successfully with bucket: draw-explain-storage");
+  bucket = storage.bucket("drawexplain-storage");
+  console.log("Google Cloud Storage initialized successfully with bucket: drawexplain-storage");
 } catch (error) {
   console.error("Failed to initialize Google Cloud Storage:", error.message);
   console.error("Error stack:", error.stack);
@@ -80,7 +76,6 @@ const upload = multer({
     fieldSize: 10 * 1024 * 1024
   },
   fileFilter: (req, file, cb) => {
-    console.log('Multer file filter - file:', file.originalname, 'mimetype:', file.mimetype);
     cb(null, true);
   }
 });
@@ -88,7 +83,6 @@ const upload = multer({
 // Generic upload handler
 async function uploadToGCS(file, res) {
   try {
-    console.log("uploadToGCS called with file:", file ? file.originalname : "null");
     
     if (!file) {
       console.error("No file uploaded");
@@ -135,7 +129,6 @@ async function uploadToGCS(file, res) {
 
     blobStream.on("finish", () => {
       const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-      console.log("File uploaded successfully:", publicUrl);
       res.status(200).json({ 
         success: true,
         publicUrl,

@@ -12,7 +12,7 @@ aiRouter.post("/question", authMiddleware, async (req, res) => {
     }
 
     // Call processSubmission and get feedback
-    const feedback = await aiController.processSubmission("drawexplain-storage", questionId, userId);
+    const feedback = await aiController.processSubmission("drawexplain_storage", questionId, userId);
 
     // feedback should be an object with { grade, writtenFeedback, spokenFeedback }
     // Return the feedback immediately to the frontend

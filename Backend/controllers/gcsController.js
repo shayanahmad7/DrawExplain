@@ -58,8 +58,8 @@ try {
   
   const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
   storage = new Storage({ credentials });
-  bucket = storage.bucket("drawexplain-storage");
-  console.log("Google Cloud Storage initialized successfully with bucket: drawexplain-storage");
+  bucket = storage.bucket("drawexplain_storage");
+  console.log("Google Cloud Storage initialized successfully with bucket: drawexplain_storage");
 } catch (error) {
   console.error("Failed to initialize Google Cloud Storage:", error.message);
   console.error("Error stack:", error.stack);

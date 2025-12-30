@@ -10,7 +10,7 @@ module.exports = function (passport) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplainbackend-74788697407.europe-west1.run.app'}/api/v1/auth/google/callback`,
+        callbackURL: `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplain-138149752130.europe-west1.run.app'}/api/v1/auth/google/callback`,
       },
       async function (accessToken, refreshToken, profile, cb) {
         try {

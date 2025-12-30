@@ -25,8 +25,8 @@ app.use(helmet());
 const corsOptions = {
   origin: [
     'http://localhost:3001',
-    'https://drawexplain-74788697407.europe-west1.run.app',
-    'https://drawexplainbackend-74788697407.europe-west1.run.app',
+    'https://drawexplainfrontend-138149752130.europe-west1.run.app',
+    'https://drawexplain-138149752130.europe-west1.run.app',
     'https://drawexplain.com',
     'https://www.drawexplain.com'
   ],

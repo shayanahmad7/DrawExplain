@@ -61,7 +61,7 @@ export default function FeedbackPage() {
 
         // Also load questions to get AI solution for this question
         const questionID = localStorage.getItem("questionID");
-        const questionResponse = await authenticatedFetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplainbackend-74788697407.europe-west1.run.app'}/api/v1/questions/`);
+        const questionResponse = await authenticatedFetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplain-138149752130.europe-west1.run.app'}/api/v1/questions/`);
         if (!questionResponse.ok) {
           throw new Error(`HTTP error loading questions: ${questionResponse.status}`);
         }

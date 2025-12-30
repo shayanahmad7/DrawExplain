@@ -19,7 +19,7 @@ export default function LoginPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplainbackend-74788697407.europe-west1.run.app'}/api/v1/auth/login`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://drawexplain-138149752130.europe-west1.run.app'}/api/v1/auth/login`,
         {
           method: "POST",
           headers: {
